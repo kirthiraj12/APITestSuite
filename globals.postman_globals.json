@@ -1,0 +1,27 @@
+{
+  "id": "d08f05fb-30f7-e91a-c9d6-cd29e15d2cb3",
+  "name": "Postman Globals",
+  "values": [
+    {
+      "key": "echo_digest_realm",
+      "type": "text",
+      "value": "Users",
+      "enabled": true
+    },
+    {
+      "key": "echo_digest_nonce",
+      "type": "text",
+      "value": "iPSMbCRxQvtIMe0lyoVqH8TFVff9OdCY",
+      "enabled": true
+    },
+    {
+      "key": "name",
+      "type": "text",
+      "value": "Karlin_TestProject",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2016-11-07T17:00:40.079Z",
+  "_postman_exported_using": "Postman/4.8.1"
+}

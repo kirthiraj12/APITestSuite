@@ -1,0 +1,160 @@
+{
+	"id": "b0c84264-a144-9a91-a431-3044a31e7033",
+	"name": "Slalom_Postman_Projects",
+	"description": "",
+	"order": [],
+	"folders": [
+		{
+			"id": "41bcc316-76ee-f8f0-c844-724e669ba766",
+			"name": "UseCase_00_GoogleMapsAPI",
+			"description": "",
+			"order": [
+				"986ca77d-4b07-9a3e-4080-cd95d1a9c036",
+				"561cfcec-0a72-764f-9ce9-574930cd9964"
+			],
+			"owner": 0,
+			"collectionId": "b0c84264-a144-9a91-a431-3044a31e7033"
+		},
+		{
+			"id": "c31e37d4-aa23-38fc-5fdc-698e20ff7d00",
+			"name": "UseCase_01_Negative_Test_Cases",
+			"description": "",
+			"order": [
+				"952acf00-3ea6-4df7-343a-1e12055d7cb2",
+				"c230ad5c-1ed0-f235-d527-94c5bb44b09f"
+			],
+			"owner": 0,
+			"collectionId": "b0c84264-a144-9a91-a431-3044a31e7033"
+		},
+		{
+			"id": "5ae5fbdf-0ad0-1f9d-e779-504421be60d6",
+			"name": "UseCase_02_Request_Chaining",
+			"description": "",
+			"order": [
+				"e10c511f-6e8b-b19a-8e6f-f3b22648f748",
+				"362193dc-3666-2145-a9c1-d746accca7fa"
+			],
+			"owner": 0
+		}
+	],
+	"timestamp": 1472527605483,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "362193dc-3666-2145-a9c1-d746accca7fa",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{base_url}}maps/api/directions/json",
+			"preRequestScript": "var PutRequest = JSON.parse(environment[\"DrivingRequest\"]);\n\n//delete PutRequest.\n\n //PutRequest.state = \"update\"\n \n postman.setEnvironmentVariable(\"putBody\", JSON.stringify(PutRequest));",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1478537261346,
+			"name": "PUT - update the Request with changed data",
+			"description": "",
+			"collectionId": "b0c84264-a144-9a91-a431-3044a31e7033",
+			"responses": [],
+			"rawModeData": "{{putBody}}"
+		},
+		{
+			"id": "561cfcec-0a72-764f-9ce9-574930cd9964",
+			"headers": "",
+			"url": "{{base_url}}/maps/api/directions/json?origin=75+9th+Ave+New+York,+NY&destination=MetLife+Stadium+1+MetLife+Stadium+Dr+East+Rutherford,+NJ+07073&mode=transit&arrival_time=1391374800&key=AIzaSyCJFiw_XYJxPwBSwROHAWvqhioe4evpm-U",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "console.log(responseBody);\n\nvar data = JSON.parse(responseBody)\n\ntests[\"status code is 200\"]= responseCode.code ===200;\n\n\n//postman.setEnvironmentVariable(\"access_token\",data.access_token);\n\nif(responseCode.code === 200)\n{\n    try{\n    \n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"Body matches string available_travel_modes\"] = responseBody.has(\"available_travel_modes\");\n    tests[\"Body matches string geocoded_waypoints\"] =  responseBody.has(\"geocoded_waypoints\");\n    tests[\"Body matches string access geocoder_status\"] = responseBody.has(\"geocoder_status\");\n    \n     tests[\"Body matches string access types\"] = responseBody.has(\"types\");\n     \n      tests[\"Body matches string access geocoder_status\"] = responseBody.has(\"geocoder_status\");\n       tests[\"Body matches string access partial_match\"] = responseBody.has(\"partial_match\");\n      tests[\"Body matches string access routes\"] = responseBody.has(\"routes\");\n     tests[\"Body matches string access status\"] = responseBody.has(\"status\");\n     \n}\n\ncatch(e) {\n console.log(\"cannot parse response, check the result\");\n \n exit;\n    \n}\n\n}",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1478536380182,
+			"name": "GET Google Transit ",
+			"description": "",
+			"collectionId": "b0c84264-a144-9a91-a431-3044a31e7033",
+			"responses": []
+		},
+		{
+			"id": "952acf00-3ea6-4df7-343a-1e12055d7cb2",
+			"headers": "",
+			"url": "{{base_url}}maps/api/directions/json?destination=MetLife+Stadium+1+MetLife+Stadium+Dr+East+Rutherford,+NJ+07073&key=AIzaSyCJFiw_XYJxPwBSwROHAWvqhioe4evpm-U",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "console.log(responseBody);\n\nvar data = JSON.parse(responseBody)\n\ntests[\"status code is 400\"]= responseCode.code === 400;\n\n\n//postman.setEnvironmentVariable(\"access_token\",data.access_token);\n\nif(responseCode.code === 400)\n{\n    try{\n    \n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"Body matches string error_message\"] = responseBody.has(\"error_message\");\n    tests[\"Body matches string routes\"] =  responseBody.has(\"routes\");\n    tests[\"Body matches string access status\"] = responseBody.has(\"status\");\n    tests[\"Body as error mesageInvalid request. Missing the 'origin' parameter.\"] = jsonData.error_message ===\"Invalid request. Missing the 'origin' parameter.\"\n      tests[\"Body as status as INVALID_REQUEST\"] = jsonData.status ===\"INVALID_REQUEST\"\n    \n    \n}\n\ncatch(e) {\n console.log(\"cannot parse response, check the result\");\n \n exit;\n    \n}\n\n}",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1478536628237,
+			"name": "Test_Case_GetDriving - Validate error message if Origin is not provided ",
+			"description": "",
+			"collectionId": "b0c84264-a144-9a91-a431-3044a31e7033",
+			"responses": []
+		},
+		{
+			"id": "986ca77d-4b07-9a3e-4080-cd95d1a9c036",
+			"headers": "",
+			"url": "{{base_url}}maps/api/directions/json?origin=75+9th+Ave+New+York,+NY&destination=MetLife+Stadium+1+MetLife+Stadium+Dr+East+Rutherford,+NJ+07073&key=AIzaSyCJFiw_XYJxPwBSwROHAWvqhioe4evpm-U",
+			"preRequestScript": "//**** date calculation ****//\n\nvar d = new Date();\nvar n = d.getTime() + 7878709760;\n\npostman.setEnvironmentVariable(\"FutureDate\",n);\n\n//***** base name*****//\n\nvar d = new Date();\nvar n = d.getTime();\n\nvar n = \"QA Testing\" + d+ n;\n\npostman.setEnvironmentVariable(\"baseName\",n);\n\n//**** Current time ****//\n\nvar d = new Date();\nvar n = d.getTime();\n\npostman.setEnvironmentVariable(\"currentTime\",n);\n\n",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "console.log(responseBody);\n\nvar data = JSON.parse(responseBody)\n\ntests[\"status code is 200\"]= responseCode.code ===200;\n\n\n//postman.setEnvironmentVariable(\"access_token\",data.access_token);\n\nif(responseCode.code === 200)\n{\n    try{\n    \n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"Body matches string geocoded_waypoints\"] = responseBody.has(\"geocoded_waypoints\");\n    tests[\"Body matches string geocoder_status\"] =  responseBody.has(\"geocoder_status\");\n    tests[\"Body matches string access place_id\"] = responseBody.has(\"place_id\");\n    \n     tests[\"Body matches string access types\"] = responseBody.has(\"types\");\n     \n      tests[\"Body matches string access routes\"] = responseBody.has(\"routes\");\n       tests[\"Body matches string access bounds\"] = responseBody.has(\"bounds\");\n      tests[\"Body matches string access northeast\"] = responseBody.has(\"northeast\");\n     tests[\"Body matches string access lat\"] = responseBody.has(\"lat\");\n    tests[\"Body matches string access lng\"] = responseBody.has(\"lng\");\n       tests[\"Body matches string access southwest\"] = responseBody.has(\"southwest\");\n            tests[\"Body matches string access copyrights\"] = responseBody.has(\"copyrights\");\n         tests[\"Body matches string access legs\"] = responseBody.has(\"legs\");              tests[\"Body matches string access distance\"] = responseBody.has(\"distance\");\n          tests[\"Body matches string access duration\"] = responseBody.has(\"duration\");          tests[\"Body matches string access end_address\"] = responseBody.has(\"end_address\");\n            tests[\"Body matches string access end_location\"] = responseBody.has(\"end_location\");\n           tests[\"Body matches string access start_address\"] = responseBody.has(\"start_address\");\n    \n}\n\ncatch(e) {\n console.log(\"cannot parse response, check the result\");\n \n exit;\n    \n}\n\n}",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1478537525978,
+			"name": "GET Google Driving ",
+			"description": "",
+			"collectionId": "b0c84264-a144-9a91-a431-3044a31e7033",
+			"responses": []
+		},
+		{
+			"id": "c230ad5c-1ed0-f235-d527-94c5bb44b09f",
+			"headers": "",
+			"url": "{{base_url}}maps/api/directions/json?origin=75+9th+Ave+New+York,+NY&key=AIzaSyCJFiw_XYJxPwBSwROHAWvqhioe4evpm-U",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "console.log(responseBody);\n\nvar data = JSON.parse(responseBody)\n\ntests[\"status code is 400\"]= responseCode.code === 400;\n\n\n//postman.setEnvironmentVariable(\"access_token\",data.access_token);\n\nif(responseCode.code === 400)\n{\n    try{\n    \n    var jsonData = JSON.parse(responseBody);\n    \n    tests[\"Body matches string error_message\"] = responseBody.has(\"error_message\");\n    tests[\"Body matches string routes\"] =  responseBody.has(\"routes\");\n    tests[\"Body matches string access status\"] = responseBody.has(\"status\");\n    tests[\"Body as error mesageInvalid request. Missing the 'origin' parameter.\"] = jsonData.error_message ===\"Invalid request. Missing the 'destination' parameter.\"\n      tests[\"Body as status as INVALID_REQUEST\"] = jsonData.status ===\"INVALID_REQUEST\"\n    \n    \n}\n\ncatch(e) {\n console.log(\"cannot parse response, check the result\");\n \n exit;\n    \n}\n\n}",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1478536735264,
+			"name": "Test_Case_GetDriving - Validate error message if destination is not provided",
+			"description": "",
+			"collectionId": "b0c84264-a144-9a91-a431-3044a31e7033",
+			"responses": []
+		},
+		{
+			"id": "e10c511f-6e8b-b19a-8e6f-f3b22648f748",
+			"headers": "",
+			"url": "{{base_url}}maps/api/directions/json?origin=75+9th+Ave+New+York,+NY&destination=MetLife+Stadium+1+MetLife+Stadium+Dr+East+Rutherford,+NJ+07073&key=AIzaSyCJFiw_XYJxPwBSwROHAWvqhioe4evpm-U",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "console.log(responseBody);\n\nvar data = JSON.parse(responseBody)\n\ntests[\"status code is 200\"]= responseCode.code ===200;\n\n\n//postman.setEnvironmentVariable(\"access_token\",data.access_token);\n\nif(responseCode.code === 200)\n{\n    try{\n    \n    var jsonData = JSON.parse(responseBody);\n    \n    postman.setEnvironmentVariable(\"DrivingRequest\", responseBody);\n    \n    tests[\"Body matches string geocoded_waypoints\"] = responseBody.has(\"geocoded_waypoints\");\n    tests[\"Body matches string geocoder_status\"] =  responseBody.has(\"geocoder_status\");\n    tests[\"Body matches string access place_id\"] = responseBody.has(\"place_id\");\n    \n     tests[\"Body matches string access types\"] = responseBody.has(\"types\");\n     \n      tests[\"Body matches string access routes\"] = responseBody.has(\"routes\");\n       tests[\"Body matches string access bounds\"] = responseBody.has(\"bounds\");\n      tests[\"Body matches string access northeast\"] = responseBody.has(\"northeast\");\n     tests[\"Body matches string access lat\"] = responseBody.has(\"lat\");\n    tests[\"Body matches string access lng\"] = responseBody.has(\"lng\");\n       tests[\"Body matches string access southwest\"] = responseBody.has(\"southwest\");\n            tests[\"Body matches string access copyrights\"] = responseBody.has(\"copyrights\");\n         tests[\"Body matches string access legs\"] = responseBody.has(\"legs\");              tests[\"Body matches string access distance\"] = responseBody.has(\"distance\");\n          tests[\"Body matches string access duration\"] = responseBody.has(\"duration\");          tests[\"Body matches string access end_address\"] = responseBody.has(\"end_address\");\n            tests[\"Body matches string access end_location\"] = responseBody.has(\"end_location\");\n           tests[\"Body matches string access start_address\"] = responseBody.has(\"start_address\");\n    \n}\n\ncatch(e) {\n console.log(\"cannot parse response, check the result\");\n \n exit;\n    \n}\n\n}",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1478537003608,
+			"name": "GET Google Driving  copy",
+			"description": "",
+			"collectionId": "b0c84264-a144-9a91-a431-3044a31e7033",
+			"responses": []
+		}
+	]
+}
